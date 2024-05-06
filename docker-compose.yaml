@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:8
+    ports:
+      - 3306:3306
+    volumes:
+      - ~/apps/finance-api:/var/lib/finance-api
+    environment:
+      - MYSQL_ROOT_PASSWORD=dev123
+      - MYSQL_DATABASE=finance_api
+
+  cache:
+    image: redis:7.0.8
+    ports:
+      - 6379:6379
+
+  mail:
+    image: rnwood/smtp4dev
+    ports:
+      - 3001:80
