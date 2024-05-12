@@ -1,21 +1,26 @@
-name: Code Static Validation
-
 on:
   pull_request:
     branches: ["main"]
 
 jobs:
   lint-format-check:
+    name: Code Static Validation
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-      - name: Install Ruff
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements/ruff.requirements.txt
-      - name: Lint
-        run: make lint_github
-      - name: Check format
-        run: make check_format
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+      - name: Check imports sorting
+        uses: isort/isort-action@master
+        with:
+          isortVersion: "5.13.2"
+      - name: Check code formatting
+        uses: psf/black@stable
+        with:
+          version: "24.4.2"
+      - name: Check code style
+        uses: py-actions/flake8@v2
+        with:
+          flake8-version: "7.0.0"
+          plugins: "pylint_django==2.5.5"
