@@ -1,9 +1,8 @@
 on:
   pull_request:
     branches: ["main"]
-
 jobs:
-  lint-format-check:
+  code-static-validation:
     name: Code Static Validation
     runs-on: ubuntu-latest
     steps:
@@ -24,3 +23,7 @@ jobs:
         with:
           flake8-version: "7.0.0"
           plugins: "pylint_django==2.5.5"
+      - name: Check deployment playbook
+        uses: ansible/ansible-lint@v24.2.3
+        with:
+          args: "deployment/playbooks/"

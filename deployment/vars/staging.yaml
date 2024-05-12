@@ -1,0 +1,3 @@
+db_name: staging_finance_db
+db_user: dev
+db_password: dev123
