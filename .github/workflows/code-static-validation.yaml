@@ -26,4 +26,4 @@ jobs:
       - name: Check deployment playbook
         uses: ansible/ansible-lint@v24.2.3
         with:
-          args: "deployment/playbooks/"
+          args: "devops/playbooks/"

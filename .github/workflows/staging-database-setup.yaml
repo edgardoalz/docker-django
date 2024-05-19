@@ -1,4 +1,7 @@
-on: workflow_dispatch
+on:
+  pull_request:
+    branches:
+      - main
 jobs:
   staging-database-setup:
     name: Staging Database Setup
@@ -13,18 +16,22 @@ jobs:
       - name: Install Ansible
         run: pip install ansible==9.5.1
       - name: Create SSH Key file
-        run: echo "${{ secrets.STAGING_SSH }}" > .ansible_key
-      - name: Create known_hosts file
-        run: touch ~/.ssh/known_hosts
-      - name: Setup known_hosts
-        run: ssh-keyscan "${{ secrets.STAGING_DB_HOST }}" >> ~/.ssh/known_hosts
+        run: |
+          echo "${{ secrets.SERVER_SSH_KEY }}" > .ansible_key
+          chmod 600 .ansible_key
+      - name: Setup .ssh
+        run: |
+          mkdir ~/.ssh
+          touch ~/.ssh/known_hosts
+          ssh-keyscan "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
       - name: Create Ansible Inventory file
         run: |
-          sed -i "s/$DB_HOST/${{ secrets.STAGING_DB_HOST }}/g" \
-          deployment/inventory/staging
+          sed -i "s/\$DB_HOST/${{ secrets.SERVER_HOST }}/g" \
+          devops/inventory/staging
       - name: Run Ansible playbook
         run: |
-          ansible-playbook deployment/playbooks/database.yaml \
+          ansible-playbook devops/playbooks/database.yaml \
           --key-file .ansible_key \
-          -i deployment/inventory/staging \
-          -e @deployment/vars/staging.yaml \
+          --user "${{ secrets.SERVER_USER }}" \
+          -i devops/inventory/staging \
+          -e @devops/vars/staging.yaml \
