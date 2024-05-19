@@ -11,19 +11,18 @@ jobs:
         with:
           cache: "pip"
       - name: Install Ansible
-        run: pip install ansible
+        run: pip install ansible==9.5.1
       - name: Create SSH Key file
         run: echo "${{ secrets.STAGING_SSH }}" > .ansible_key
+      - name: Setup known_hosts
+        run: ssh-keyscan "${{ secrets.STAGING_DB_HOST }}" >> ~/.ssh/known_hosts
       - name: Create Ansible Inventory file
-        uses: cuchi/jinja2-action@v1.2.2
-        with:
-          template: deployment/inventory/staging.j2
-          output_file: .inventory
-          strict: true
-          variables: DB_HOST="${{ secrets.STAGING_DB_HOST }}"
+        run: |
+          sed -i "s/$DB_HOST/${{ secrets.STAGING_DB_HOST }}/g" \
+          deployment/inventory/staging
       - name: Run Ansible playbook
         run: |
           ansible-playbook deployment/playbooks/database.yaml \
           --key-file .ansible_key \
-          -i .inventory \
+          -i deployment/inventory/staging \
           -e @deployment/vars/staging.yaml \
