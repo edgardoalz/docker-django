@@ -20,7 +20,7 @@ jobs:
           template: deployment/inventory/staging.j2
           output_file: .inventory
           strict: true
-          variables: DB_HOST={{ secrets.STAGING_DB_HOST }}
+          variables: DB_HOST="${{ secrets.STAGING_DB_HOST }}"
       - name: Run Ansible playbook
         run: |
           ansible-playbook deployment/playbooks/database.yaml \
