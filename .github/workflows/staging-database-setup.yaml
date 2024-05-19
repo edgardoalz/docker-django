@@ -1,7 +1,4 @@
-on:
-  pull_request:
-    branches:
-      - main
+on: workflow_dispatch
 jobs:
   staging-database-setup:
     name: Staging Database Setup
