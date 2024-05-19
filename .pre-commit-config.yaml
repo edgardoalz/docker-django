@@ -3,12 +3,25 @@ repos:
     rev: 5.13.2
     hooks:
       - id: isort
+        name: Import sorting
   - repo: https://github.com/psf/black-pre-commit-mirror
     rev: 24.4.2
     hooks:
       - id: black
+        name: Code formatting
   - repo: https://github.com/pycqa/flake8
     rev: 7.0.0
     hooks:
       - id: flake8
-        additional_dependencies: [pylint_django==2.5.5]
+        name: Code style
+        additional_dependencies:
+          - pylint_django==2.5.5
+  - repo: https://github.com/ansible/ansible-lint
+    rev: v24.2.3
+    hooks:
+      - id: ansible-lint
+        name: Ansible playbook validation
+        args:
+          - "--offline"
+        additional_dependencies:
+          - ansible

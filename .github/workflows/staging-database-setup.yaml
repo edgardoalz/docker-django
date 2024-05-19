@@ -1,0 +1,29 @@
+on: workflow_dispatch
+jobs:
+  staging-database-setup:
+    name: Staging Database Setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          cache: "pip"
+      - name: Install Ansible
+        run: pip install ansible
+      - name: Create SSH Key file
+        run: echo "${{ secrets.STAGING_SSH }}" > .ansible_key
+      - name: Create Ansible Inventory file
+        uses: cuchi/jinja2-action@v1.2.2
+        with:
+          template: deployment/inventory/inventory.j2
+          output_file: .inventory
+          strict: true
+          variables: DB_HOST={{ secrets.STAGING_DB_HOST }}
+      - name: Run Ansible playbook
+        run: |
+          ansible-playbook deployment/playbooks/database.yaml \
+          --key-file .ansible_key \
+          -i .inventory \
+          -e @deployment/vars/staging.yaml \
