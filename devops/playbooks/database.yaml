@@ -1,0 +1,33 @@
+- name: Setup database
+  hosts: database
+  become: true
+  tasks:
+    - name: Install MySQL
+      ansible.builtin.apt:
+        name: mysql-server=8.0*
+        state: present
+        update_cache: true
+        install_recommends: false
+    - name: Start MySQL service
+      ansible.builtin.service:
+        name: mysql
+        state: started
+        enabled: true
+    - name: Install MySQL Python package (community.mysql.* requires it)
+      ansible.builtin.apt:
+        name: python3-mysqldb
+        state: present
+    - name: Create database
+      community.mysql.mysql_db:
+        name: "{{ db_name }}"
+        state: present
+        login_user: root
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+    - name: Create user
+      community.mysql.mysql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        priv: "{{ db_name }}.*:ALL"
+        state: present
+        login_user: root
+        login_unix_socket: /var/run/mysqld/mysqld.sock
