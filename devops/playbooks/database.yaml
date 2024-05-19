@@ -28,6 +28,7 @@
         name: "{{ db_user }}"
         password: "{{ db_password }}"
         priv: "{{ db_name }}.*:ALL"
+        host_all: true
         state: present
         login_user: root
         login_unix_socket: /var/run/mysqld/mysqld.sock
