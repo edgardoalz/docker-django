@@ -15,15 +15,12 @@ jobs:
       - name: Create SSH Key file
         run: echo "${{ secrets.STAGING_SSH }}" > .ansible_key
       - name: Create Ansible Inventory file
-        uses: cuchi/jinja2-action@v1.2.2
-        with:
-          template: deployment/inventory/staging.j2
-          output_file: .inventory
-          strict: true
-          variables: DB_HOST="${{ secrets.STAGING_DB_HOST }}"
+        run: |
+          sed -i "s/$DB_HOST/${{ secrets.STAGING_DB_HOST }}/g" \
+          deployment/inventory/staging
       - name: Run Ansible playbook
         run: |
           ansible-playbook deployment/playbooks/database.yaml \
           --key-file .ansible_key \
-          -i .inventory \
+          -i deployment/inventory/staging \
           -e @deployment/vars/staging.yaml \
