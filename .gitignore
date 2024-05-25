@@ -16,3 +16,7 @@ pip-delete-this-directory.txt
 ################
 .env
 .venv
+
+# VS Code #
+################
+.vscode/
