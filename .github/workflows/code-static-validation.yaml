@@ -10,6 +10,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
+        with:
+          cache: pip
       - name: Check imports sorting
         uses: isort/isort-action@master
         with:
@@ -27,3 +29,7 @@ jobs:
         uses: ansible/ansible-lint@v24.2.3
         with:
           args: "devops/playbooks/"
+      - name: Check type hints
+        run: |
+          pip install mypy==1.10.0
+          mypy . --ignore-missing-imports --scripts-are-modules
