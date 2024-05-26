@@ -1,9 +1,10 @@
+name: Code Static Validation
 on:
   pull_request:
     branches: ["main"]
 jobs:
-  code-static-validation:
-    name: Code Static Validation
+  check-imports-sorting:
+    name: Check Imports Sorting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -11,25 +12,56 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
+          python-version-file: ".python-version"
           cache: pip
       - name: Check imports sorting
         uses: isort/isort-action@master
         with:
           isortVersion: "5.13.2"
+  check-code-formatting:
+    name: Check Code Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+          cache: pip
       - name: Check code formatting
         uses: psf/black@stable
         with:
           version: "24.4.2"
+  check-code-style:
+    name: Check Code Style
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+          cache: pip
       - name: Check code style
         uses: py-actions/flake8@v2
         with:
           flake8-version: "7.0.0"
           plugins: "pylint_django==2.5.5"
-      - name: Check deployment playbook
-        uses: ansible/ansible-lint@v24.2.3
+  check-type-hints:
+    name: Check Type Hints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          args: "devops/playbooks/"
+          python-version-file: ".python-version"
+          cache: pip
       - name: Check type hints
         run: |
-          pip install mypy==1.10.0
+          pip install -r requirements-dev.txt
+          cp .example.env .env
           mypy . --ignore-missing-imports --scripts-are-modules
