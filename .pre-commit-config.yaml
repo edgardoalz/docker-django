@@ -16,16 +16,15 @@ repos:
         name: Code style
         additional_dependencies:
           - pylint_django==2.5.5
-  - repo: https://github.com/ansible/ansible-lint
-    rev: v24.2.3
-    hooks:
-      - id: ansible-lint
-        name: Ansible playbook validation
-        args:
-          - "--offline"
-        additional_dependencies:
-          - ansible
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.10.0
     hooks:
       - id: mypy
+        additional_dependencies:
+          [
+            Django==5.0.4,
+            django-environ==0.11.2,
+            mysqlclient==2.2.4,
+            bcrypt==4.1.3,
+            django-stubs==5.0.0,
+          ]
