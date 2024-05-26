@@ -1,0 +1,8 @@
+[project]
+name = "finance_api"
+version = "0.0.1"
+requires-python = ">= 3.12"
+readme = "README.md"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "finance_api.settings"
