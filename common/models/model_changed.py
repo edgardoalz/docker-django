@@ -8,7 +8,7 @@ K = TypeVar("K")
 
 
 class ModelChangedMixin(models.Model):
-    fields_to_watch: tuple[str, ...]
+    fields_to_watch: tuple[str, ...] = ()
 
     class Meta(TypedModelMeta):
         abstract = True
