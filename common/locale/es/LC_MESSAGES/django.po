@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-29 20:06-0700\n"
+"POT-Creation-Date: 2024-06-01 11:41-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,11 +13,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
 "1 : 2;\n"
-#: common/models/soft_delete.py:40
+
+#: common/models/soft_delete.py:37
 msgid "Is active"
 msgstr "Está activo"
 
-#: common/models/soft_delete.py:41
+#: common/models/soft_delete.py:38
 msgid "Deletion date"
 msgstr "Fecha de baja"
 

@@ -1,3 +1,8 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -13,19 +18,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
 "1 : 2;\n"
+#: multitenant/apps.py:8
+msgid "Multitenant"
+msgstr "Renta del sistema"
 
-#: bank/apps.py:8 bank/models/bank.py:19
-msgid "Bank"
-msgstr "Banco"
-
-#: bank/models/bank.py:10
+#: multitenant/models/tenant.py:10
 msgid "Code"
 msgstr "Código"
 
-#: bank/models/bank.py:14
+#: multitenant/models/tenant.py:14
 msgid "Name"
 msgstr "Nombre"
 
-#: bank/models/bank.py:20
-msgid "Banks"
-msgstr "Bancos"
+#: multitenant/models/tenant.py:17
+msgid "Tenant"
+msgstr "Arrendatario"
+
+#: multitenant/models/tenant.py:18
+msgid "Tenants"
+msgstr "Arrendatarios"
