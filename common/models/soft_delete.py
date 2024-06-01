@@ -1,7 +1,9 @@
 from typing import Generic, TypeVar
 
 from django.db import models
+from django.db.models.manager import BaseManager as DjangoBaseManager
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django_stubs_ext.db.models import TypedModelMeta
 
 from .model_changed import ModelChangedMixin
@@ -16,18 +18,14 @@ class SoftDeleteQuerySetMixin(models.QuerySet[T], Generic[T]):
             deleted_at=timezone.now(),
         )
 
-    soft_delete.queryset_only = True  # type: ignore
-
     def restore(self) -> int:
         return self.update(
             is_active=True,
             deleted_at=None,
         )
 
-    restore.queryset_only = True  # type: ignore
 
-
-class SoftDeleteManagerMixin(models.Manager[T], Generic[T]):
+class SoftDeleteManagerMixin(DjangoBaseManager[T], Generic[T]):
     def get_queryset(self):
         return super().get_queryset().filter(is_active=True)
 
@@ -36,8 +34,8 @@ class SoftDeleteManagerMixin(models.Manager[T], Generic[T]):
 
 
 class SoftDeleteModelMixin(ModelChangedMixin, models.Model):
-    is_active = models.BooleanField(default=True)
-    deleted_at = models.DateTimeField(blank=True, null=True)
+    is_active = models.BooleanField(_("Is active"), default=True)
+    deleted_at = models.DateTimeField(_("Deletion date"), blank=True, null=True)
 
     def __init__(self, *args, **kwargs) -> None:
         self.__soft_delete_cleaned = False

@@ -1,10 +1,7 @@
-from typing import Any, TypeVar
+from typing import Any
 
 from django.db import models
 from django_stubs_ext.db.models import TypedModelMeta
-
-T = TypeVar("T")
-K = TypeVar("K")
 
 
 class ModelChangedMixin(models.Model):
