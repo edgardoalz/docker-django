@@ -1,6 +1,9 @@
 from pathlib import Path
 
+import django_stubs_ext
 import environ
+
+django_stubs_ext.monkeypatch()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +29,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-LOCAL_APPS = ["finance_auth"]
+LOCAL_APPS = ["finance_auth", "bank"]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
 
@@ -100,6 +103,8 @@ AUTH_USER_MODEL = "finance_auth.User"
 LANGUAGE_CODE = "es"
 
 TIME_ZONE = "UTC"
+
+LOCALE_PATHS = [BASE_DIR / "common" / "locale"]
 
 USE_I18N = True
 
