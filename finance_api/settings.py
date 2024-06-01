@@ -29,9 +29,13 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
+VENDOR_APPS = [
+    "admin_auto_filters",
+]
+
 LOCAL_APPS = ["multitenant", "finance_auth", "bank"]
 
-INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + VENDOR_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
