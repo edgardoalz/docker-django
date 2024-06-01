@@ -1,3 +1,7 @@
+# Mac #
+############
+.DS_Store
+
 # Django #
 ############
 *.log
@@ -24,3 +28,10 @@ pip-delete-this-directory.txt
 # Django i18n #
 ################
 *.mo
+
+# Coverage #
+################
+junit/
+htmlcov/
+.coverage
+coverage.*
