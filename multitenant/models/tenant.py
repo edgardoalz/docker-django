@@ -5,7 +5,7 @@ from django_stubs_ext.db.models import TypedModelMeta
 from common.models.base import BaseModel
 
 
-class Bank(BaseModel, models.Model):
+class Tenant(BaseModel, models.Model):
     code = models.CharField(
         _("Code"),
         max_length=255,
@@ -13,11 +13,9 @@ class Bank(BaseModel, models.Model):
     )
     name = models.CharField(_("Name"), max_length=255)
 
-    validation_exclusions = {"name"}
-
     class Meta(TypedModelMeta):
-        verbose_name = _("Bank")
-        verbose_name_plural = _("Banks")
+        verbose_name = _("Tenant")
+        verbose_name_plural = _("Tenants")
 
     def __str__(self) -> str:
-        return f"Bank[{self.code}]: {self.name}"
+        return f"Tenant[{self.code}]: {self.name}"

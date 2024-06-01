@@ -29,7 +29,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-LOCAL_APPS = ["finance_auth", "bank"]
+LOCAL_APPS = ["multitenant", "finance_auth", "bank"]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
 
