@@ -1,4 +1,4 @@
-name: Code Static Validation
+name: Code Validation
 on:
   pull_request:
     branches: ["main"]
@@ -65,3 +65,44 @@ jobs:
           pip install -r requirements-dev.txt
           cp .example.env .env
           mypy . --ignore-missing-imports --scripts-are-modules
+  run-tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+          cache: pip
+      - name: Create virtual environment
+        run: python -m venv .venv
+      - name: Activate virtual environment
+        run: source .venv/bin/activate
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Set up environment
+        run: cp .example.env .env
+      - name: Set up infrastructure
+        run: docker-compose up -d
+      - name: Wait for infrastructure to be ready
+        run: ./devops/wait-for-database.sh
+      - name: Run database migrations
+        run: python manage.py migrate
+      - name: Run tests
+        run: |
+          pytest \
+            --doctest-modules \
+            --junitxml=junit/test-results.xml \
+            --cov=. \
+            --cov-report=xml:coverage.xml \
+            --cov-report=html
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ github.sha}}
+          path: |
+            junit/test-results.xml
+            htmlcov/
+        if: ${{ always() }}
