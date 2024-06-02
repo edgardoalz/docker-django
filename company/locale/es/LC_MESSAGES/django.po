@@ -1,0 +1,84 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-01 18:19-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
+
+#: company/apps.py:8 company/models/company.py:25
+msgid "Company"
+msgstr "Compañía"
+
+#: company/constants.py:6
+msgid "Customer"
+msgstr "Cliente"
+
+#: company/constants.py:7
+msgid "Supplier"
+msgstr "Proveedor"
+
+#: company/constants.py:8
+msgid "Creditor"
+msgstr "Acreedor"
+
+#: company/constants.py:9
+msgid "Employee"
+msgstr "Empleado"
+
+#: company/constants.py:10
+msgid "Debtor"
+msgstr "Deudor"
+
+#: company/models/company.py:10 company/models/company_type.py:19
+msgid "Name"
+msgstr "Nombre"
+
+#: company/models/company.py:13
+msgid "Business name"
+msgstr "Razón social"
+
+#: company/models/company.py:18
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: company/models/company.py:19
+msgid "Phone"
+msgstr "Teléfono"
+
+#: company/models/company.py:20
+msgid "Contact"
+msgstr "Contacto"
+
+#: company/models/company.py:21
+msgid "Description"
+msgstr "Descripción"
+
+#: company/models/company.py:22 company/models/company_type.py:25
+msgid "Company types"
+msgstr "Tipos de compañía"
+
+#: company/models/company.py:26
+msgid "Companies"
+msgstr "Compañías"
+
+#: company/models/company_type.py:14
+msgid "Code"
+msgstr "Código"
+
+#: company/models/company_type.py:24
+msgid "Company type"
+msgstr "Tipo de compañía"

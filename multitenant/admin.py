@@ -17,7 +17,9 @@ class TenantModelAdmin(BaseModelAdmin[T]):
         self, request: HttpRequest, obj: T | None = None
     ) -> Sequence[Any]:
         readonly_fields = super().get_readonly_fields(request, obj)
-        return tuple(readonly_fields) + ("tenant",)
+        if obj:
+            return tuple(readonly_fields) + ("tenant",)
+        return readonly_fields
 
     def get_list_filter(self, request: HttpRequest) -> Sequence[Any]:  # type: ignore[override]
         list_filter = super().get_list_filter(request)
@@ -26,5 +28,5 @@ class TenantModelAdmin(BaseModelAdmin[T]):
 
 @admin.register(Tenant)
 class TenantAdmin(BaseModelAdmin[Tenant], admin.ModelAdmin[Tenant]):
-    list_display = ["name"]
-    search_fields = ["name"]
+    list_display = ("name",)
+    search_fields = ("name",)
