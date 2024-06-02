@@ -7,7 +7,7 @@ from ..bank import Bank
 class BankTestCase(TestCase):
     def test_str(self):
         bank = Bank.objects.create(code="american_express", name="American Express")
-        self.assertEqual(str(bank), "Bank[american_express]: American Express")
+        self.assertEqual(str(bank), "American Express")
 
     def test_code_unique(self):
         Bank.objects.create(code="american_express", name="American Express")

@@ -7,7 +7,7 @@ from ..tenant import Tenant
 class TenantTestCase(TestCase):
     def test_str(self):
         tenant = Tenant.objects.create(code="coronado", name="Coronado Contadores")
-        self.assertEqual(str(tenant), "Tenant[coronado]: Coronado Contadores")
+        self.assertEqual(str(tenant), "Coronado Contadores")
 
     def test_code_unique(self):
         Tenant.objects.create(code="coronado", name="Coronado Contadores")

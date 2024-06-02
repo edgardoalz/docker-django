@@ -18,4 +18,4 @@ class Tenant(BaseModel, models.Model):
         verbose_name_plural = _("Tenants")
 
     def __str__(self) -> str:
-        return f"Tenant[{self.code}]: {self.name}"
+        return self.name

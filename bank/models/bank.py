@@ -20,4 +20,4 @@ class Bank(BaseModel, models.Model):
         verbose_name_plural = _("Banks")
 
     def __str__(self) -> str:
-        return f"Bank[{self.code}]: {self.name}"
+        return self.name

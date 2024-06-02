@@ -26,7 +26,7 @@ class TenantManager(BaseManager[T], Generic[T]):
         filter = Q(tenant__pk=tenant_id)
         if include_public:
             filter |= self.public_filter
-        return self.get_queryset().filter(filter)
+        return super().get_queryset().filter(filter)
 
 
 class TenantModel(BaseModel, models.Model):
@@ -40,6 +40,8 @@ class TenantModel(BaseModel, models.Model):
         verbose_name=_("Tenant"),
     )
 
+    global_objects: ClassVar[models.Manager[Self]] = models.Manager()  # type: ignore[assignment]
+    objects: ClassVar[BaseManager[Self]] = BaseManager()
     tenant_set: ClassVar[TenantManager[Self]] = TenantManager()
 
     class Meta:
