@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from multitenant.factories.tenant import TenantFactory
+from multitenant.models.tenant_model import MissingTenantError
 
 from ...factories.company import CompanyFactory
 from ..company import Company
@@ -29,3 +30,7 @@ class CompanyTestCase(TestCase):
         self.assertEqual(len(tenant_companies_lookup), 2)
         for company in tenant_companies:
             self.assertIn(company, tenant_companies_lookup)
+
+    def test_tenant_required(self):
+        with self.assertRaisesMessage(MissingTenantError, "Tenant is required"):
+            CompanyFactory(tenant=None)

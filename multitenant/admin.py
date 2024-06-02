@@ -17,13 +17,24 @@ class TenantModelAdmin(BaseModelAdmin[T]):
         self, request: HttpRequest, obj: T | None = None
     ) -> Sequence[Any]:
         readonly_fields = super().get_readonly_fields(request, obj)
-        if obj:
-            return tuple(readonly_fields) + ("tenant",)
-        return readonly_fields
+        if not obj:
+            return readonly_fields
+        return tuple(readonly_fields) + ("tenant",)
+
+    def get_list_display(self, request: HttpRequest) -> Sequence[Any]:  # type: ignore[override]
+        list_display = super().get_list_display(request)
+        return tuple(list_display) + ("tenant",)
 
     def get_list_filter(self, request: HttpRequest) -> Sequence[Any]:  # type: ignore[override]
         list_filter = super().get_list_filter(request)
         return tuple(list_filter) + (AutocompleteFilterFactory("Tenant", "tenant"),)
+
+    def get_form(
+        self, request: Any, obj: T | None = None, change: bool = False, **kwargs: Any
+    ) -> Any:
+        form = super().get_form(request, obj, change, **kwargs)
+        form.base_fields["tenant"].required = not self.model.contains_public_data
+        return form
 
 
 @admin.register(Tenant)
