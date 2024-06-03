@@ -1,16 +1,12 @@
 import factory
 
-from multitenant.factories.tenant import _TenantFactory
+from multitenant.factories.tenant import TenantFactory
 
 from ..models.company import Company
 from ..models.company_type import CompanyType
 
 
-def CompanyFactory(**kwargs) -> Company:
-    return _CompanyFactory(**kwargs)
-
-
-class _CompanyFactory(factory.django.DjangoModelFactory):
+class CompanyFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Company
 
@@ -21,7 +17,7 @@ class _CompanyFactory(factory.django.DjangoModelFactory):
     rfc = factory.Faker("bothify", text="?????????????")
     business_name = factory.LazyAttribute(lambda o: o.name)
     contact = factory.Faker("email")
-    tenant = factory.SubFactory(_TenantFactory)
+    tenant = factory.SubFactory(TenantFactory)
 
     @factory.post_generation
     def company_types(self, create, extracted, **kwargs):
