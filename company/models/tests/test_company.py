@@ -32,5 +32,5 @@ class CompanyTestCase(TestCase):
             self.assertIn(company, tenant_companies_lookup)
 
     def test_tenant_required(self):
-        with self.assertRaisesMessage(MissingTenantError, "Tenant is required"):
+        with self.assertRaises(MissingTenantError):
             CompanyFactory(tenant=None)

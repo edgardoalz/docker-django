@@ -9,7 +9,7 @@ from ..company_type import CompanyType
 class CompanyTypeTestCase(TestCase):
     def test_str(self):
         company_type = CompanyType.objects.get(code=CompanyTypeCodes.employee)
-        self.assertEqual(str(company_type), "Employee")
+        self.assertEqual(str(company_type), CompanyTypeCodes.employee.label)
 
     def test_create_invalid_code(self):
         error_message = Field().error_messages["invalid_choice"] % dict(value="Test")

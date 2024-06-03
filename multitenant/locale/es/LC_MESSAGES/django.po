@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-01 18:15-0700\n"
+"POT-Creation-Date: 2024-06-02 17:30-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,10 +31,18 @@ msgstr "Código"
 msgid "Name"
 msgstr "Nombre"
 
-#: multitenant/models/tenant.py:17 multitenant/models/tenant_model.py:40
+#: multitenant/models/tenant.py:17 multitenant/models/tenant_model.py:49
 msgid "Tenant"
 msgstr "Arrendatario"
 
 #: multitenant/models/tenant.py:18
 msgid "Tenants"
 msgstr "Arrendatarios"
+
+#: multitenant/models/tenant_model.py:18
+msgid "Mutation of public objects is not allowed"
+msgstr "Modificación de datos públicos no está permitido."
+
+#: multitenant/models/tenant_model.py:24
+msgid "Tenant is required"
+msgstr "El campo 'Arrendatario' es requerid"
