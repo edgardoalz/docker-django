@@ -33,7 +33,7 @@ VENDOR_APPS = [
     "admin_auto_filters",
 ]
 
-LOCAL_APPS = ["multitenant", "finance_auth", "bank", "company", "account"]
+LOCAL_APPS = ["multitenant", "finance_auth", "bank", "company", "account", "billing"]
 
 INSTALLED_APPS = DJANGO_APPS + VENDOR_APPS + LOCAL_APPS
 
