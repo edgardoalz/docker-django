@@ -34,3 +34,9 @@ class CompanyTestCase(TestCase):
     def test_tenant_required(self):
         with self.assertRaises(MissingTenantError):
             CompanyFactory(tenant=None)
+
+    def test_soft_delete(self):
+        company = CompanyFactory()
+        company.soft_delete()
+        self.assertFalse(Company.objects.filter(pk=company.pk).exists())
+        self.assertTrue(Company.objects.deleted().filter(pk=company.pk).exists())

@@ -8,7 +8,7 @@ from .company_type import CompanyType
 
 class Company(TenantModel, models.Model):
     name = models.CharField(_("Name"), max_length=255)
-    rfc = models.CharField("RFC", unique=True, max_length=13, blank=True, null=True)
+    rfc = models.CharField("RFC", max_length=13, blank=True, null=True)
     business_name = models.CharField(
         _("Business name"),
         max_length=255,
@@ -24,6 +24,8 @@ class Company(TenantModel, models.Model):
     class Meta:
         verbose_name = _("Company")
         verbose_name_plural = _("Companies")
+
+        unique_together = (("tenant", "rfc"),)
 
     def __str__(self):
         if self.rfc:

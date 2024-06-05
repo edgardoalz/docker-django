@@ -67,3 +67,11 @@ class AccountMoveTestCase(TestCase):
     def test_tenant_required(self):
         with self.assertRaises(MissingTenantError):
             AccountMoveFactory(tenant=None)
+
+    def test_soft_delete(self):
+        account_move = AccountMoveFactory()
+        account_move.soft_delete()
+        self.assertFalse(AccountMove.objects.filter(pk=account_move.pk).exists())
+        self.assertTrue(
+            AccountMove.objects.deleted().filter(pk=account_move.pk).exists()
+        )
