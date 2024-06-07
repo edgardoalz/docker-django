@@ -9,7 +9,6 @@ from .models.bank_account import BankAccount
 from .models.credit_card import CreditCard
 
 
-# Register your models here.
 @admin.register(Bank)
 class BankAdmin(BaseModelAdmin[Bank], admin.ModelAdmin[Bank]):
     list_display = ("name",)
