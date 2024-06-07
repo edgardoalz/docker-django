@@ -1,0 +1,44 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-07 16:32-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
+
+#: organization/admin.py:13
+msgid "Balance"
+msgstr "Saldo"
+
+#: organization/apps.py:8 organization/models/organization.py:17
+msgid "Organization"
+msgstr "Organización"
+
+#: organization/models/organization.py:9
+msgid "Name"
+msgstr "Nombre"
+
+#: organization/models/organization.py:12
+msgid "Business name"
+msgstr "Razón social"
+
+#: organization/models/organization.py:14
+msgid "Account"
+msgstr "Cuenta"
+
+#: organization/models/organization.py:18
+msgid "Organizations"
+msgstr "Organizaciones"

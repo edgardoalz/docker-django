@@ -29,5 +29,5 @@ class Company(TenantModel, models.Model):
 
     def __str__(self):
         if self.rfc:
-            return f"{self.name} - {_('RFC')}: {self.rfc}"
+            return f"{self.name} - RFC: {self.rfc}"
         return self.name
