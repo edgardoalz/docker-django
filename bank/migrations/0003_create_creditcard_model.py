@@ -118,6 +118,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 "abstract": False,
+                "verbose_name": "Credit card",
+                "verbose_name_plural": "Credit cards",
             },
             managers=[
                 ("global_objects", django.db.models.manager.Manager()),

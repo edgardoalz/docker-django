@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-08 10:57-0700\n"
+"POT-Creation-Date: 2024-06-08 10:59-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,26 +19,18 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
 "1 : 2;\n"
 
-#: organization/admin.py:14
-msgid "Balance"
-msgstr "Saldo"
+#: credit/apps.py:8
+msgid "Credit"
+msgstr "Crédito"
 
-#: organization/apps.py:8 organization/models/organization.py:17
-msgid "Organization"
-msgstr "Organización"
-
-#: organization/models/organization.py:9
+#: credit/models/credit_type.py:8
 msgid "Name"
 msgstr "Nombre"
 
-#: organization/models/organization.py:12
-msgid "Business name"
-msgstr "Razón social"
+#: credit/models/credit_type.py:13
+msgid "Credit type"
+msgstr "Tipo de crédito"
 
-#: organization/models/organization.py:14
-msgid "Account"
-msgstr "Cuenta"
-
-#: organization/models/organization.py:18
-msgid "Organizations"
-msgstr "Organizaciones"
+#: credit/models/credit_type.py:14
+msgid "Credit types"
+msgstr "Tipos de crédito"
