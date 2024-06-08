@@ -5,8 +5,8 @@ services:
     image: mysql:8
     ports:
       - 3306:3306
-    volumes:
-      - ~/apps/finance-api:/var/lib/finance-api
+    # volumes:
+    #   - ~/apps/finance-api:/var/lib/finance-api
     environment:
       - MYSQL_ROOT_PASSWORD=dev123
       - MYSQL_DATABASE=finance_api
@@ -16,7 +16,28 @@ services:
     ports:
       - 6379:6379
 
+  broker:
+    image: rabbitmq:3.6-management
+    ports:
+      - 5672:5672 # Service
+      - 15672:15672 # Management
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_DEFAULT_VHOST=vhost
+    volumes:
+      - rabbitmq_etc:/etc/rabbitmq/
+      - rabbitmq_data:/var/lib/rabbitmq/
+      - rabbitmq_logs:/var/log/rabbitmq/
   mail:
     image: rnwood/smtp4dev
     ports:
       - 3001:80
+
+volumes:
+  rabbitmq_etc:
+  rabbitmq_data:
+  rabbitmq_logs:
+
+networks:
+  finance_network:

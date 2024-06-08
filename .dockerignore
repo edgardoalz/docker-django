@@ -1,0 +1,8 @@
+.github
+devops
+.ansible-lint
+.example-env
+.gitignore
+.python-version
+docker-compose.yaml
+Makefile
