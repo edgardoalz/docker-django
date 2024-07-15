@@ -2,7 +2,7 @@
 
 ## Setup
 
-We use python 3.12 and recommend to use pyenv to manage you're python versions.
+We use python 3.11 and recommend to use pyenv to manage you're python versions.
 Here's how to install it with Hombrew.
 
 `brew update`
