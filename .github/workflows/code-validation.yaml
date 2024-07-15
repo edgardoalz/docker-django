@@ -63,7 +63,7 @@ jobs:
       - name: Check type hints
         run: |
           pip install -r requirements-dev.txt
-          cp .example.env .env
+          cp example.env .env
           mypy . --ignore-missing-imports --scripts-are-modules
   run-tests:
     name: Run Tests
@@ -83,7 +83,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
       - name: Set up environment
-        run: cp .example.env .env
+        run: cp example.env .env
       - name: Set up infrastructure
         run: docker-compose up -d
       - name: Wait for infrastructure to be ready
