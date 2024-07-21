@@ -41,3 +41,10 @@ Finally you can run the dev server.
 `python manage.py runserver`
 
 Navigate to `http://127.0.0.1:8000/admin/` and log in with your credentials
+
+
+## Documentation
+
+### REST - Swagger & OpenApi
+
+This project includes generated documentation for REST services by leveraging [Swagger UI](https://swagger.io/) and [OpenApi schema](https://www.openapis.org/) both connected to [djangorestframework](https://www.django-rest-framework.org/). After setting up the local development environment it can be found at http://127.0.0.1:8000/swagger
