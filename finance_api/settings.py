@@ -32,6 +32,7 @@ DJANGO_APPS = [
 VENDOR_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
+    "drf_spectacular",
     "admin_auto_filters",
 ]
 
@@ -118,6 +119,15 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "EXCEPTION_HANDLER": "common.drf.exceptions.exception_handler",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Finance API",
+    "DESCRIPTION": "REST service for finance multi-tenant application",
+    "VERSION": "2.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": "/api/v[0-9]",
 }
 
 
