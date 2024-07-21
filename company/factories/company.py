@@ -9,6 +9,7 @@ from ..models.company_type import CompanyType
 class CompanyFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Company
+        skip_postgeneration_save = True
 
     name = factory.Faker("company")
     description = factory.Faker("paragraph")
