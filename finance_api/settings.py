@@ -30,6 +30,8 @@ DJANGO_APPS = [
 ]
 
 VENDOR_APPS = [
+    "rest_framework",
+    "rest_framework_simplejwt",
     "admin_auto_filters",
 ]
 
@@ -108,6 +110,15 @@ PASSWORD_HASHERS = [
 ]
 
 AUTH_USER_MODEL = "finance_auth.User"
+
+# Django rest framework
+REST_FRAMEWORK = {
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "EXCEPTION_HANDLER": "common.drf.exceptions.exception_handler",
+}
 
 
 # Internationalization
