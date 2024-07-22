@@ -16,6 +16,11 @@ class TenantGenericViewSet(ViewSetMixin, TenantAPIView[T], Generic[T]):
         permissions + [TenantModelPermission()]
         return permissions
 
+    def get_serializer_context(self) -> dict:
+        context = super().get_serializer_context()
+        context["tenant"] = self.tenant
+        return context
+
 
 class TenantReadOnlyModelViewSet(
     mixins.RetrieveModelMixin,

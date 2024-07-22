@@ -17,5 +17,9 @@ class BankAccountFactory(factory.django.DjangoModelFactory):
     owner_name = factory.Faker("sentence")
     type = BankAccountType.checking_account
     bank = factory.SubFactory(BankFactory)
-    account = factory.SubFactory(AccountFactory)
+    account = factory.SubFactory(
+        AccountFactory,
+        name=factory.SelfAttribute("..name"),
+        tenant=factory.SelfAttribute("..tenant"),
+    )
     tenant = factory.SubFactory(TenantFactory)
