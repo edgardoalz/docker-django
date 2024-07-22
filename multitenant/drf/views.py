@@ -1,17 +1,16 @@
-from typing import TypeVar
+from typing import Generic, TypeVar
 
 from django.db import models
 from rest_framework import generics
 
 from ..models.tenant import Tenant
-from ..models.tenant_model import TenantManager, TenantModel
+from ..models.tenant_model import TenantModel
 from ..utils import get_tenant_from_request
-from .exceptions import MissingTenant
 
 T = TypeVar("T", bound=TenantModel)
 
 
-class TenantAPIView(generics.GenericAPIView, generics.UsesQuerySet[T]):
+class TenantAPIView(generics.GenericAPIView, Generic[T]):
     tenant: Tenant | None
     queryset: models.QuerySet[T]
 
@@ -26,13 +25,13 @@ class TenantAPIView(generics.GenericAPIView, generics.UsesQuerySet[T]):
     def get_include_public(self) -> bool:
         return self.include_public
 
-    def get_queryset(self) -> TenantManager:
-        assert (
-            self.queryset.model == TenantModel
+    def get_queryset(self) -> models.QuerySet[T]:
+        assert issubclass(
+            self.queryset.model, TenantModel
         ), f"Model {self.queryset.model} must be a TenantModel"
 
         if not self.tenant:
-            raise MissingTenant
+            return self.queryset.none()
 
         include_public = self.get_include_public()
         return self.queryset.model.tenant_set.with_tenant(
@@ -40,10 +39,7 @@ class TenantAPIView(generics.GenericAPIView, generics.UsesQuerySet[T]):
         )
 
     def initial(self, request, *args, **kwargs):
-        super().initial(request, *args, **kwargs)
-
         if not self.tenant:
             self.tenant = get_tenant_from_request(request)
 
-        if not self.tenant:
-            raise MissingTenant
+        super().initial(request, *args, **kwargs)

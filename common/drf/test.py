@@ -23,6 +23,10 @@ class CRUDAPITestCase(APITestCase):
         url = self._detail_url(uuid, version)
         return self.client.put(url, data)
 
+    def partial_update(self, uuid: str, data: dict, version="v1"):
+        url = self._detail_url(uuid, version)
+        return self.client.patch(url, data)
+
     def delete(self, uuid: str, version="v1"):
         url = self._detail_url(uuid, version)
         return self.client.delete(url)
