@@ -1,0 +1,71 @@
+name: Staging deployment
+
+on:
+  workflow_run:
+    workflows: [Docker Delivery]
+    types:
+      - completed
+jobs:
+  deployment:
+    name: Automatic deployment
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    env:
+      DOCKER_BUILDKIT: 1
+      KAMAL_REGISTRY_USERNAME: ${{ github.actor }}
+      KAMAL_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: |
+          gem install specific_install
+          gem specific_install https://github.com/basecamp/kamal.git
+
+      - name: Setup ssh agent
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Retrieve runner uid and gid
+        id: uid-gid
+        run: |
+          echo "uid=$(id -u)" >> $GITHUB_OUTPUT
+          echo "gid=$(id -g)" >> $GITHUB_OUTPUT
+
+      - name: Decrypt secrets with ansible-vault
+        uses: taichunmin/github-actions-ansible-vault@v1
+        env:
+          UID: ${{ steps.uid-gid.outputs.uid }}
+          GID: ${{ steps.uid-gid.outputs.gid }}
+        with:
+          vault_key: ${{ secrets.VAULT_KEY }}
+          command: |
+            ansible-vault decrypt \
+              .secrets/staging.env \
+              --output .env
+            chown $UID:$GID .env
+
+      - name: Set up docker buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Get commit short reference
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Run deploy command
+        run: |
+          export VERSION=${{ steps.vars.outputs.sha_short }}
+          export CONFIG_FILE=./config/deploy.staging.yml
+          kamal env push -c $CONFIG_FILE
+          kamal deploy -P -c $CONFIG_FILE

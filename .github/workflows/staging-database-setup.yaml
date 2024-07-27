@@ -1,3 +1,5 @@
+name: Staging Database Setup
+
 on: workflow_dispatch
 jobs:
   staging-database-setup:

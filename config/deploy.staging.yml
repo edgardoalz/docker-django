@@ -1,0 +1,160 @@
+# Name of your application. Used to uniquely configure containers.
+service: finance-api
+
+# Name of the container image.
+image: edgardoalz/docker-django
+
+ssh:
+  user: ubuntu
+
+# Credentials for your image host.
+registry:
+  # Specify the registry server, if you're not using Docker Hub
+  server: ghcr.io
+  username: edgardoalz
+
+  # Always use an access token rather than real password when possible.
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+healthcheck:
+  max_attempts: 15
+  interval: 10s
+
+# Deploy to these servers.
+servers:
+  web:
+    hosts:
+      - 54.186.251.12
+    # Inject ENV variables into containers (secrets come from .env).
+    # Remember to run `kamal env push` after making changes!
+    env:
+      clear:
+        DEBUG: true
+        PORT: 8000
+        # TINI_SUBREAPER: 1
+        ALLOWED_HOSTS: 127.0.0.1,localhost,stg-finance-api.edgardoalz.net
+        CACHE_URL: redis://172.17.0.1:6379/1
+        BROKER_URL: redis://172.17.0.1:6379/0
+        MAIL_URL: smtp://172.17.0.1:25
+
+      secret:
+        - DATABASE_URL
+
+    healthcheck:
+      path: /up
+      port: 8000
+
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+
+    labels:
+      traefik.enable: true
+      traefik.http.routers.web.rule: Host(`stg-finance-api.edgardoalz.net`)
+      traefik.http.routers.web.service: finance-api-web@docker
+      traefik.http.routers.web.middlewares: redirect-to-https
+      traefik.http.routers.web.tls: true
+      traefik.http.middlewares.redirect-to-https.redirectscheme.scheme: https
+
+  workers:
+    hosts:
+      - 54.186.251.12
+    traefik: true
+    cmd: "/app/celery-start.sh"
+    # options:
+    #   memory: 2g
+    #   cpus: 4
+    healthcheck:
+      cmd: "/app/celery-check.sh"
+
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+
+    labels:
+      traefik.enable: false
+    env:
+      clear:
+        DEBUG: true
+        PORT: 8000
+        # TINI_SUBREAPER: 1
+        ALLOWED_HOSTS: 127.0.0.1,localhost,stg-finance-api.edgardoalz.net
+        CACHE_URL: redis://172.17.0.1:6379/1
+        BROKER_URL: redis://172.17.0.1:6379/0
+        MAIL_URL: smtp://172.17.0.1:25
+
+      secret:
+        - DATABASE_URL
+
+  beat:
+    hosts:
+      - 54.186.251.12
+    traefik: true
+    cmd: "/app/beat-start.sh"
+    # options:
+    #   memory: 2g
+    #   cpus: 4
+    healthcheck:
+      cmd: "/app/beat-check.sh"
+
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+
+    labels:
+      traefik.enable: false
+    env:
+      clear:
+        DEBUG: true
+        PORT: 8000
+        # TINI_SUBREAPER: 1
+        ALLOWED_HOSTS: 127.0.0.1,localhost,stg-finance-api.edgardoalz.net
+        CACHE_URL: redis://172.17.0.1:6379/1
+        BROKER_URL: redis://172.17.0.1:6379/0
+        MAIL_URL: smtp://172.17.0.1:25
+
+      secret:
+        - DATABASE_URL
+
+# Configure custom arguments for Traefik. Be sure to reboot traefik when you modify it.
+traefik:
+  options:
+    publish:
+      - "443:443"
+    volume:
+      - "/letsencrypt/acme.json:/letsencrypt/acme.json"
+  args:
+    api.dashboard: true
+    # accesslog: true
+    log.level: INFO
+    accesslog.format: json
+    accesslog.filters.statusCodes: "400-599"
+    accesslog.filters.retryAttempts: true
+    accesslog.filters.minDuration: 101ms
+
+    entryPoints.web.address: ":80"
+    entryPoints.websecure.address: ":443"
+
+    entryPoints.web.http.redirections.entryPoint.to: websecure
+    entryPoints.web.http.redirections.entryPoint.scheme: https
+    entryPoints.web.http.redirections.entrypoint.permanent: true
+  labels:
+    traefik.enable: true
+    traefik.http.routers.dashboard.rule: Host(`stg-finance-traefik.edgardoalz.net`)
+    traefik.http.routers.dashboard.service: api@internal
+    traefik.http.routers.dashboard.middlewares: redirect-to-https, auth
+    traefik.http.routers.dashboard.tls: true
+    traefik.http.middlewares.redirect-to-https.redirectscheme.scheme: https
+    traefik.http.middlewares.auth.basicauth.users: edgardoalz:$apr1$d9a0or7f$ELZJmCmjVq6ZrHCoxNLiQ0
+
+    # Catchall
+    traefik.http.routers.catchall.entryPoints: websecure
+    traefik.http.routers.catchall.rule: PathPrefix(`/`)
+    traefik.http.routers.catchall.service: unavailable
+    traefik.http.routers.catchall.priority: "1"
+    traefik.http.services.unavailable.loadbalancer.server.port: "0"
+
