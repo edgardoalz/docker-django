@@ -1,0 +1,51 @@
+name: Deploy docker image
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Image tag'
+        required: true
+        # default: 'latest'
+      env:
+        description: 'Environment tag'
+        required: true
+        default: stg
+jobs:
+  deploy_to_env:
+    # if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_BUILDKIT: 1
+      KAMAL_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      KAMAL_REGISTRY_USERNAME: ${{ secrets.GITHUB_ACTOR }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: |
+          gem install specific_install
+          gem specific_install https://github.com/basecamp/kamal.git
+
+      - uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Run deploy command
+        run: |
+          export VERSION=${{ github.event.inputs.logLevel }}
+          kamal deploy \
+            -P -c ./config/deploy.${{ github.event.inputs.logLevel }}.yml

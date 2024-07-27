@@ -1,7 +1,7 @@
-from celery import Celery
 from pathlib import Path
 
 import environ
+from celery import Celery
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,7 +13,8 @@ broker_url = env("BROKER_URL")
 
 print(broker_url)
 
-app = Celery('tasks', broker=broker_url, broker_connection_retry_on_startup=True)
+app = Celery("tasks", broker=broker_url, broker_connection_retry_on_startup=True)
+
 
 @app.task
 def add(x, y):
