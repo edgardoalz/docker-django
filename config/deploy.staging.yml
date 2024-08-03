@@ -116,6 +116,7 @@ servers:
         CACHE_URL: redis://172.17.0.1:6379/1
         BROKER_URL: redis://172.17.0.1:6379/0
         MAIL_URL: smtp://172.17.0.1:25
+        EXAMPLE_VAR: value
 
       secret:
         - DATABASE_URL
