@@ -1,0 +1,94 @@
+name: Code Validation
+on:
+  pull_request:
+    branches: ["main"]
+jobs:
+  check-imports-sorting:
+    name: Check Imports Sorting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+          cache: pip
+      - name: Check imports sorting
+        uses: isort/isort-action@master
+        with:
+          isortVersion: "5.13.2"
+  check-code-formatting:
+    name: Check Code Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+          cache: pip
+      - name: Check code formatting
+        uses: psf/black@stable
+        with:
+          version: "24.4.2"
+  check-code-style:
+    name: Check Code Style
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+          cache: pip
+      - name: Check code style
+        uses: py-actions/flake8@v2
+        with:
+          flake8-version: "7.0.0"
+          plugins: "pylint_django==2.5.5"
+  check-type-hints:
+    name: Check Type Hints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+          cache: pip
+      - name: Check type hints
+        run: |
+          pip install -r requirements-dev.txt
+          cp example.env .env
+          mypy . --ignore-missing-imports --scripts-are-modules
+  run-tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+          cache: pip
+      - name: Create virtual environment
+        run: python -m venv .venv
+      - name: Activate virtual environment
+        run: source .venv/bin/activate
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Set up environment
+        run: cp example.env .env
+      - name: Set up infrastructure
+        run: docker-compose up -d
+      - name: Wait for infrastructure to be ready
+        run: ./devops/wait-for-database.sh
+      - name: Run database migrations
+        run: python manage.py migrate
+      - name: Run tests
+        run: pytest -v

@@ -1,8 +1,0 @@
--r base.txt
-
-pre-commit==3.7.1
-isort==5.13.2
-black==24.4.2
-flake8==7.0.0
-pylint-django==2.5.5
-ansible-lint==24.2.3

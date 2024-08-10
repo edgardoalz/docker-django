@@ -1,0 +1,93 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-07 16:29-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
+
+#: bank/admin.py:23 bank/admin.py:33
+msgid "Balance"
+msgstr "Saldo"
+
+#: bank/apps.py:8 bank/models/bank.py:19 bank/models/bank_account.py:16
+#: bank/models/credit_card.py:23
+msgid "Bank"
+msgstr "Banco"
+
+#: bank/constants.py:6
+msgid "Checking account"
+msgstr "Cuenta de cheques"
+
+#: bank/constants.py:7
+msgid "Savings account"
+msgstr "Cuenta de ahorro"
+
+#: bank/constants.py:8
+msgid "Investment account"
+msgstr "Cuenta de inversión"
+
+#: bank/models/bank.py:10
+msgid "Code"
+msgstr "Código"
+
+#: bank/models/bank.py:14 bank/models/bank_account.py:13
+#: bank/models/credit_card.py:14
+msgid "Name"
+msgstr "Nombre"
+
+#: bank/models/bank.py:20
+msgid "Banks"
+msgstr "Bancos"
+
+#: bank/models/bank_account.py:12 bank/models/credit_card.py:13
+msgid "Account number"
+msgstr "Número de cuenta"
+
+#: bank/models/bank_account.py:14 bank/models/credit_card.py:15
+msgid "Owner name"
+msgstr "Titular"
+
+#: bank/models/bank_account.py:15
+msgid "Type"
+msgstr "Tipo"
+
+#: bank/models/bank_account.py:17 bank/models/credit_card.py:24
+msgid "Account"
+msgstr "Cuenta"
+
+#: bank/models/bank_account.py:20
+msgid "Bank account"
+msgstr "Cuenta de banco"
+
+#: bank/models/bank_account.py:21
+msgid "Bank accounts"
+msgstr "Cuentas de banco"
+
+#: bank/models/credit_card.py:17
+msgid "Closing day"
+msgstr "Día de corte"
+
+#: bank/models/credit_card.py:20
+msgid "Payment due day"
+msgstr "Día de límite de pago"
+
+#: bank/models/credit_card.py:22
+msgid "Credit limit"
+msgstr "Límite de crédito"
+
+#: bank/models/credit_card.py:27
+msgid "Credit card"
+msgstr "Tarjeta de crédito"
+
+#: bank/models/credit_card.py:28
+msgid "Credit cards"
+msgstr "Tarjetas de crédito"

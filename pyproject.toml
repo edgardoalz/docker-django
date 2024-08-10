@@ -1,11 +1,8 @@
-[tool.poetry]
+[project]
 name = "finance_api"
-version = "1.0.0"
-description = "Finance services REST API"
-authors = ["Jose Solano <jesolano@protonmail.com>"]
+version = "0.0.1"
+requires-python = ">= 3.11"
 readme = "README.md"
-packages = [{ include = "finance_api" }]
 
-[tool.ruff.lint]
-# Enable import sorting.
-extend-select = ["I"]
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "finance_api.settings"

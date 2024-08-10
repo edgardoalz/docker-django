@@ -1,7 +1,10 @@
 import os
 from pathlib import Path
 
+import django_stubs_ext
 import environ
+
+django_stubs_ext.monkeypatch()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -16,9 +19,9 @@ SECRET_KEY = env(
 
 DEBUG = env("DEBUG", default=False)
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS", default=[])
+ALLOWED_HOSTS: list[str] = env("ALLOWED_HOSTS", default=[])
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -26,6 +29,26 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+
+VENDOR_APPS = [
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "drf_spectacular",
+    "admin_auto_filters",
+]
+
+LOCAL_APPS = [
+    "multitenant",
+    "finance_auth",
+    "bank",
+    "company",
+    "account",
+    "billing",
+    "organization",
+    "credit",
+]
+
+INSTALLED_APPS = DJANGO_APPS + VENDOR_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -84,13 +107,39 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+PASSWORD_HASHERS = [
+    "finance_auth.utils.hashers.BCryptSalt10Hasher",
+]
+
+AUTH_USER_MODEL = "finance_auth.User"
+
+# Django rest framework
+REST_FRAMEWORK = {
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "EXCEPTION_HANDLER": "common.drf.exceptions.exception_handler",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Finance API",
+    "DESCRIPTION": "REST service for finance multi-tenant application",
+    "VERSION": "2.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": "/api/v[0-9]",
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "es"
 
 TIME_ZONE = "UTC"
+
+LOCALE_PATHS = [BASE_DIR / "common" / "locale"]
 
 USE_I18N = True
 
