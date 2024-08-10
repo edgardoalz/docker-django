@@ -48,7 +48,7 @@ jobs:
           UID: ${{ steps.uid-gid.outputs.uid }}
           GID: ${{ steps.uid-gid.outputs.gid }}
         with:
-          vault_key: ${{ secrets.VAULT_KEY }}
+          vault_key: ${{ secrets.ANSIBLE_VAULT_KEY }}
           command: |
             ansible-vault decrypt \
               .secrets/staging.env \

@@ -1,14 +1,14 @@
 # Parent image
-FROM python:3.12-alpine
+FROM python:3.11-alpine
 
 # Working directory
 RUN mkdir -p /app
 WORKDIR /app
 
 # Environment variables
-ENV PORT 8000
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PORT=8000
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # User and group
 RUN addgroup -S app \
@@ -25,9 +25,8 @@ RUN apk update \
 
 # Install python dependencies
 RUN pip install --upgrade pip
-RUN mkdir requirements
-COPY ./requirements/*.txt requirements/
-RUN pip install -r requirements/runtime.txt
+COPY ./requirements*.txt .
+RUN pip install -r requirements-runtime.txt
 
 # Setup runtime scripts
 COPY ./bin/*.sh /app/
