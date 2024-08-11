@@ -1,0 +1,83 @@
+name: Docker Delivery
+
+on:
+  push:
+    branches: ['main']
+    paths-ignore:
+      - '.secrets/**'
+      - 'config/**'
+
+jobs:
+  delivery:
+    name: Delivery
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get commit short reference
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Calver release
+        uses: StephaneBour/actions-calver@master
+        id: calver
+        with:
+          date_format: "%Y.%m"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=latest
+            type=raw,value=${{ steps.vars.outputs.sha_short }}
+            type=raw,value=v${{ steps.calver.outputs.release }}
+            type=raw,value=v${{ steps.calver.outputs.release }}+${{ steps.vars.outputs.sha_short }}
+          labels: |
+            service=finance-api
+
+      - name: Build and push docker images
+        id: push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ghcr.io/${{ github.repository }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
+
+      # - name: Create release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: v${{ steps.calver.outputs.release }}+${{ steps.vars.outputs.sha_short }}
+      #     release_name: Release v${{ steps.calver.outputs.release }}+${{ steps.vars.outputs.sha_short }}
+      #     body: |
+      #       Release v${{ steps.calver.outputs.release }}+${{ steps.vars.outputs.sha_short }}
+      #     draft: false
+      #     prerelease: false

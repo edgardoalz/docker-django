@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import django_stubs_ext
@@ -18,7 +19,7 @@ SECRET_KEY = env(
 
 DEBUG = env("DEBUG", default=False)
 
-ALLOWED_HOSTS: list[str] = []
+ALLOWED_HOSTS: list[str] = env("ALLOWED_HOSTS", default=[])
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -149,6 +150,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

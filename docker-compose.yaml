@@ -1,12 +1,12 @@
-version: '3.9'
+# version: '3.9'
 
 services:
   db:
     image: mysql:8
     ports:
       - 3306:3306
-    volumes:
-      - ~/apps/finance-api:/var/lib/finance-api
+    # volumes:
+    #   - ~/apps/finance-api:/var/lib/finance-api
     environment:
       - MYSQL_ROOT_PASSWORD=dev123
       - MYSQL_DATABASE=finance_api
@@ -20,3 +20,36 @@ services:
     image: rnwood/smtp4dev
     ports:
       - 3001:80
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: ./.env.local
+    ports:
+      - 8000:8000
+    volumes:
+      - ./staticfiles:/app/staticfiles
+    depends_on:
+      - db
+      - cache
+
+  proxy:
+    image: nginx:1.27-alpine
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config/nginx/templates:/etc/nginx/templates:ro
+      - ./staticfiles:/staticfiles:ro
+    environment:
+      - PROXY_PORT=8080
+      - PROXY_SERVER_NAME=localhost
+      - APP_HOST=finance-api-app-1
+      - APP_PORT=8000
+      - STATIC_URL=/static/
+      - STATIC_ROOT=/staticfiles/
+    depends_on:
+      - app
+
+networks:
+  finance_network:
